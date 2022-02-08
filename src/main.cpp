@@ -51,7 +51,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
 
-  relay.setRelays(2);
+  relay.setRelays(4);
   relay.setInputs(255);
   relay.registerInputChangeCallback(inputChangeHandler);
   relay.init(10);
@@ -124,6 +124,22 @@ void s3BReceiver(uint8_t* data, size_t len, uint8_t* transmitterAddress){
         relay.turnOffRelay(2);
       }
     }
+    if(root.containsKey("relay_3")){
+      transmit = true;
+      if(root["relay_3"].as<bool>()){
+        relay.turnOnRelay(3);
+      }else{
+        relay.turnOffRelay(3);
+      }
+    }
+    if(root.containsKey("relay_4")){
+      transmit = true;
+      if(root["relay_4"].as<bool>()){
+        relay.turnOnRelay(4);
+      }else{
+        relay.turnOffRelay(4);
+      }
+    }
     if(root.containsKey("dac_1")){
       transmit = true;
       dac_one.setOutputRaw(root["dac_1"].as<int>());
@@ -154,6 +170,8 @@ void transmitStatus(uint8_t* transmitterAddress){
   statusPacket["relay_1"] = relay.readRelayStatus(1);
   // Serial.println("2");
   statusPacket["relay_2"] = relay.readRelayStatus(2);
+  statusPacket["relay_3"] = relay.readRelayStatus(3);
+  statusPacket["relay_3"] = relay.readRelayStatus(4);
   // Serial.println("3");
   statusPacket["dac_1"] = dac_one.setPoint;
   // Serial.println("4");
@@ -215,6 +233,22 @@ void tcpReceiver(uint8_t* buffer, size_t len){
         relay.turnOffRelay(2);
       }
     }
+    if(root.containsKey("relay_3")){
+      transmit = true;
+      if(root["relay_3"].as<bool>()){
+        relay.turnOnRelay(3);
+      }else{
+        relay.turnOffRelay(3);
+      }
+    }
+    if(root.containsKey("relay_4")){
+      transmit = true;
+      if(root["relay_4"].as<bool>()){
+        relay.turnOnRelay(4);
+      }else{
+        relay.turnOffRelay(4);
+      }
+    }
     if(root.containsKey("dac_1")){
       transmit = true;
       dac_one.setOutputRaw(root["dac_1"].as<int>());
@@ -250,6 +284,8 @@ void transmitStatus(){
   statusPacket["relay_1"] = relay.readRelayStatus(1);
   // Serial.println("2");
   statusPacket["relay_2"] = relay.readRelayStatus(2);
+  statusPacket["relay_3"] = relay.readRelayStatus(3);
+  statusPacket["relay_4"] = relay.readRelayStatus(4);
   // Serial.println("3");
   statusPacket["dac_1"] = dac_one.setPoint;
   // Serial.println("4");
