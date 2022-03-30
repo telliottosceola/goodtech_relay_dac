@@ -2,43 +2,21 @@
     {
         "id": "5e4f8b75c1422948",
         "type": "tab",
-        "label": "Flow 2",
+        "label": "Goodtech Custom Board Tester",
         "disabled": false,
         "info": ""
-    },
-    {
-        "id": "875a1b0020e4e7a0",
-        "type": "ncd-gateway-node",
-        "z": "5e4f8b75c1422948",
-        "name": "",
-        "connection": "b99bad4c7fc89c79",
-        "unknown_devices": true,
-        "outputs": 2,
-        "x": 1110,
-        "y": 320,
-        "wires": [
-            [],
-            [
-                "a81f6da2076c1f15"
-            ]
-        ]
     },
     {
         "id": "96313810361e9a35",
         "type": "inject",
         "z": "5e4f8b75c1422948",
         "name": "Relay 1 On",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
+        "props": [],
         "repeat": "",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payloadType": "date",
         "x": 720,
         "y": 200,
         "wires": [
@@ -52,7 +30,7 @@
         "type": "function",
         "z": "5e4f8b75c1422948",
         "name": "",
-        "func": "msg.payload = {};\nmsg.payload.address = \"00:13:a2:00:41:cb:10:b2\";\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_1\"] = 1;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_1\"] = 1;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -62,7 +40,8 @@
         "y": 200,
         "wires": [
             [
-                "875a1b0020e4e7a0"
+                "4edb0901dd0cab4e",
+                "82d4be37138a959d"
             ]
         ]
     },
@@ -71,17 +50,12 @@
         "type": "inject",
         "z": "5e4f8b75c1422948",
         "name": "Relay 1 Off",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
+        "props": [],
         "repeat": "",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payloadType": "date",
         "x": 720,
         "y": 280,
         "wires": [
@@ -95,7 +69,7 @@
         "type": "function",
         "z": "5e4f8b75c1422948",
         "name": "",
-        "func": "msg.payload = {};\nmsg.payload.address = \"00:13:a2:00:41:cb:10:b2\";\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_1\"] = 0;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_1\"] = 0;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -105,7 +79,7 @@
         "y": 280,
         "wires": [
             [
-                "875a1b0020e4e7a0"
+                "82d4be37138a959d"
             ]
         ]
     },
@@ -114,17 +88,12 @@
         "type": "inject",
         "z": "5e4f8b75c1422948",
         "name": "Relay 2 On",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
+        "props": [],
         "repeat": "",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payloadType": "date",
         "x": 720,
         "y": 360,
         "wires": [
@@ -138,7 +107,7 @@
         "type": "function",
         "z": "5e4f8b75c1422948",
         "name": "",
-        "func": "msg.payload = {};\nmsg.payload.address = \"00:13:a2:00:41:cb:10:b2\";\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_2\"] = 1;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_2\"] = 1;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -148,7 +117,7 @@
         "y": 360,
         "wires": [
             [
-                "875a1b0020e4e7a0"
+                "82d4be37138a959d"
             ]
         ]
     },
@@ -157,17 +126,12 @@
         "type": "inject",
         "z": "5e4f8b75c1422948",
         "name": "Relay 2 Off",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
+        "props": [],
         "repeat": "",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payloadType": "date",
         "x": 720,
         "y": 440,
         "wires": [
@@ -181,7 +145,7 @@
         "type": "function",
         "z": "5e4f8b75c1422948",
         "name": "",
-        "func": "msg.payload = {};\nmsg.payload.address = \"00:13:a2:00:41:cb:10:b2\";\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_2\"] = 0;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_2\"] = 0;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -191,7 +155,7 @@
         "y": 440,
         "wires": [
             [
-                "875a1b0020e4e7a0"
+                "82d4be37138a959d"
             ]
         ]
     },
@@ -201,7 +165,7 @@
         "z": "5e4f8b75c1422948",
         "name": "",
         "group": "6694084edc036a71",
-        "order": 0,
+        "order": 4,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -229,7 +193,7 @@
         "z": "5e4f8b75c1422948",
         "name": "",
         "group": "6694084edc036a71",
-        "order": 0,
+        "order": 5,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -257,7 +221,7 @@
         "z": "5e4f8b75c1422948",
         "name": "",
         "group": "6694084edc036a71",
-        "order": 0,
+        "order": 6,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -285,7 +249,7 @@
         "z": "5e4f8b75c1422948",
         "name": "",
         "group": "6694084edc036a71",
-        "order": 0,
+        "order": 7,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -315,7 +279,7 @@
         "label": "DAC 1",
         "tooltip": "",
         "group": "6694084edc036a71",
-        "order": 4,
+        "order": 2,
         "width": 0,
         "height": 0,
         "passthru": true,
@@ -327,7 +291,7 @@
         "step": 1,
         "className": "",
         "x": 730,
-        "y": 480,
+        "y": 920,
         "wires": [
             [
                 "e0caa1f21fa06578"
@@ -342,7 +306,7 @@
         "label": "DAC 2",
         "tooltip": "",
         "group": "6694084edc036a71",
-        "order": 4,
+        "order": 3,
         "width": 0,
         "height": 0,
         "passthru": true,
@@ -354,7 +318,7 @@
         "step": 1,
         "className": "",
         "x": 730,
-        "y": 520,
+        "y": 960,
         "wires": [
             [
                 "866548b37a566e33"
@@ -366,17 +330,17 @@
         "type": "function",
         "z": "5e4f8b75c1422948",
         "name": "",
-        "func": "set_val = msg.payload;\nmsg.payload = {};\nmsg.payload.address = \"00:13:a2:00:41:cb:10:b2\";\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"dac_1\"] = set_val;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "func": "set_val = msg.payload;\nmsg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"dac_1\"] = set_val;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 860,
-        "y": 480,
+        "y": 920,
         "wires": [
             [
-                "875a1b0020e4e7a0"
+                "82d4be37138a959d"
             ]
         ]
     },
@@ -385,17 +349,17 @@
         "type": "function",
         "z": "5e4f8b75c1422948",
         "name": "",
-        "func": "set_val = msg.payload;\nmsg.payload = {};\nmsg.payload.address = \"00:13:a2:00:41:cb:10:b2\";\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"dac_2\"] = set_val;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "func": "set_val = msg.payload;\nmsg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"dac_2\"] = set_val;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 860,
-        "y": 520,
+        "y": 960,
         "wires": [
             [
-                "875a1b0020e4e7a0"
+                "82d4be37138a959d"
             ]
         ]
     },
@@ -410,19 +374,17 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 860,
-        "y": 660,
+        "x": 460,
+        "y": 220,
         "wires": [
-            [
-                "875a1b0020e4e7a0"
-            ]
+            []
         ]
     },
     {
         "id": "414b92a85ffb8c84",
         "type": "inject",
         "z": "5e4f8b75c1422948",
-        "name": "",
+        "name": "All Low",
         "props": [
             {
                 "p": "payload"
@@ -433,10 +395,10 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"address\":\"00:13:a2:00:41:cb:10:b2\",\"command\":{\"relay_1\":0,\"relay_2\":0,\"dac_1\":0,\"dac_2\":0}}",
+        "payload": "{\"address\":\"00:13:a2:00:41:d7:37:a5\",\"command\":{\"relay_1\":0,\"relay_2\":0,\"dac_1\":0,\"dac_2\":0}}",
         "payloadType": "json",
-        "x": 730,
-        "y": 660,
+        "x": 330,
+        "y": 220,
         "wires": [
             [
                 "e9e6b35ad8668982"
@@ -455,7 +417,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1470,
+        "x": 1490,
         "y": 320,
         "wires": []
     },
@@ -463,7 +425,7 @@
         "id": "ac931041da97ad73",
         "type": "inject",
         "z": "5e4f8b75c1422948",
-        "name": "",
+        "name": "Get Status",
         "props": [
             {
                 "p": "payload"
@@ -474,10 +436,10 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"address\":\"00:13:a2:00:41:cb:10:b2\",\"command\":{\"operation\":\"get_status\"}}",
+        "payload": "{\"address\":\"00:13:a2:00:41:d7:37:a5\",\"command\":{\"operation\":\"get_status\"}}",
         "payloadType": "json",
-        "x": 720,
-        "y": 620,
+        "x": 320,
+        "y": 180,
         "wires": [
             [
                 "e9e6b35ad8668982"
@@ -504,16 +466,405 @@
         ]
     },
     {
-        "id": "b99bad4c7fc89c79",
-        "type": "ncd-gateway-config",
+        "id": "b4298668fd49d2f4",
+        "type": "inject",
+        "z": "5e4f8b75c1422948",
+        "name": "All High",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"address\":\"00:13:a2:00:41:d7:37:a5\",\"command\":{\"relay_1\":1,\"relay_2\":1,\"dac_1\":4095,\"dac_2\":4095}}",
+        "payloadType": "json",
+        "x": 330,
+        "y": 260,
+        "wires": [
+            [
+                "e9e6b35ad8668982"
+            ]
+        ]
+    },
+    {
+        "id": "250deb2f36d3182a",
+        "type": "ui_text_input",
+        "z": "5e4f8b75c1422948",
+        "name": "Destination",
+        "label": "Destination Address",
+        "tooltip": "enter the address of the desired device",
+        "group": "6694084edc036a71",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": true,
+        "topicType": "msg",
+        "x": 720,
+        "y": 80,
+        "wires": [
+            [
+                "e8cb358d88ec9b40"
+            ]
+        ]
+    },
+    {
+        "id": "e8cb358d88ec9b40",
+        "type": "change",
+        "z": "5e4f8b75c1422948",
         "name": "",
-        "comm_type": "serial",
-        "ip_address": "",
-        "tcp_port": "2101",
-        "port": "/dev/tty.usbserial-AC3VPU0N",
-        "baudRate": "115200",
-        "pan_id": "7fff",
-        "rssi": false
+        "rules": [
+            {
+                "t": "set",
+                "p": "destination",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "387fec418aa28c44",
+        "type": "mqtt in",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "topic": "Article_Channel/#",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 240,
+        "y": 420,
+        "wires": [
+            [
+                "806838e34d4a8dc8"
+            ]
+        ]
+    },
+    {
+        "id": "806838e34d4a8dc8",
+        "type": "debug",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "4edb0901dd0cab4e",
+        "type": "debug",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "82d4be37138a959d",
+        "type": "ncd-gateway-node",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "connection": "f3d2780c.9b91b",
+        "unknown_devices": 0,
+        "outputs": 1,
+        "x": 1070,
+        "y": 320,
+        "wires": [
+            [
+                "a81f6da2076c1f15"
+            ]
+        ]
+    },
+    {
+        "id": "b4472bcdab40502f",
+        "type": "inject",
+        "z": "5e4f8b75c1422948",
+        "name": "Relay 3 On",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 720,
+        "y": 520,
+        "wires": [
+            [
+                "f6711c5de182c131"
+            ]
+        ]
+    },
+    {
+        "id": "f6711c5de182c131",
+        "type": "function",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_3\"] = 1;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c0fd1161b4fdc198",
+        "type": "inject",
+        "z": "5e4f8b75c1422948",
+        "name": "Relay 3 Off",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 720,
+        "y": 600,
+        "wires": [
+            [
+                "9c21fb7df3960539"
+            ]
+        ]
+    },
+    {
+        "id": "9c21fb7df3960539",
+        "type": "function",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_3\"] = 0;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8fd4d4a4fa075596",
+        "type": "ui_button",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "group": "6694084edc036a71",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Relay 3 On",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 710,
+        "y": 480,
+        "wires": [
+            [
+                "f6711c5de182c131"
+            ]
+        ]
+    },
+    {
+        "id": "9aad76a7bd36d4d3",
+        "type": "ui_button",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "group": "6694084edc036a71",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Relay 3 Off",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 710,
+        "y": 560,
+        "wires": [
+            [
+                "9c21fb7df3960539"
+            ]
+        ]
+    },
+    {
+        "id": "89e5f296c0785ab2",
+        "type": "inject",
+        "z": "5e4f8b75c1422948",
+        "name": "Relay 4 On",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 720,
+        "y": 680,
+        "wires": [
+            [
+                "d0a2252a928ccca5"
+            ]
+        ]
+    },
+    {
+        "id": "d0a2252a928ccca5",
+        "type": "function",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_3\"] = 1;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "332b283520096c19",
+        "type": "inject",
+        "z": "5e4f8b75c1422948",
+        "name": "Relay 4 Off",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 720,
+        "y": 760,
+        "wires": [
+            [
+                "221852adedb7e308"
+            ]
+        ]
+    },
+    {
+        "id": "221852adedb7e308",
+        "type": "function",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "func": "msg.payload = {};\nmsg.payload.address = flow.get(\"destination\");\n\nfunction toUTF8Array(str) {\n    let utf8 = [];\n    for (let i = 0; i < str.length; i++) {\n        let charcode = str.charCodeAt(i);\n        if (charcode < 0x80) utf8.push(charcode);\n        else if (charcode < 0x800) {\n            utf8.push(0xc0 | (charcode >> 6),\n                      0x80 | (charcode & 0x3f));\n        }\n        else if (charcode < 0xd800 || charcode >= 0xe000) {\n            utf8.push(0xe0 | (charcode >> 12),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n        // surrogate pair\n        else {\n            i++;\n            // UTF-16 encodes 0x10000-0x10FFFF by\n            // subtracting 0x10000 and splitting the\n            // 20 bits of 0x0-0xFFFFF into two halves\n            charcode = 0x10000 + (((charcode & 0x3ff)<<10)\n                      | (str.charCodeAt(i) & 0x3ff));\n            utf8.push(0xf0 | (charcode >>18),\n                      0x80 | ((charcode>>12) & 0x3f),\n                      0x80 | ((charcode>>6) & 0x3f),\n                      0x80 | (charcode & 0x3f));\n        }\n    }\n    return utf8;\n}\n\ncommand = {};\ncommand[\"relay_3\"] = 0;\nmsg.payload.data = toUTF8Array(JSON.stringify(command));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "514c59a54891a0d1",
+        "type": "ui_button",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "group": "6694084edc036a71",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Relay 4 On",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 710,
+        "y": 640,
+        "wires": [
+            [
+                "d0a2252a928ccca5"
+            ]
+        ]
+    },
+    {
+        "id": "ce7555c9e5810303",
+        "type": "ui_button",
+        "z": "5e4f8b75c1422948",
+        "name": "",
+        "group": "6694084edc036a71",
+        "order": 11,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Relay 4 Off",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 710,
+        "y": 720,
+        "wires": [
+            [
+                "221852adedb7e308"
+            ]
+        ]
     },
     {
         "id": "6694084edc036a71",
@@ -527,10 +878,23 @@
         "className": ""
     },
     {
+        "id": "f3d2780c.9b91b",
+        "type": "ncd-gateway-config",
+        "name": "Zigmo",
+        "comm_type": "serial",
+        "ip_address": "",
+        "tcp_port": "2101",
+        "port": "/dev/tty.usbserial-AC3VPU1B",
+        "baudRate": "115200",
+        "pan_id": "7fff",
+        "rssi": false
+    },
+    {
         "id": "856a49f194838176",
         "type": "ui_tab",
         "name": "Goodtech",
         "icon": "dashboard",
+        "order": 2,
         "disabled": false,
         "hidden": false
     }
