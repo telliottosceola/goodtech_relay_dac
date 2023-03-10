@@ -1,1 +1,1 @@
-{"ssid":"Travis-WiFi","ssid_password":"2Washington99","ap_password":"password","ap_ssid":"goodtech","buzzer":0,"interface":1,"device_id":1}
+{"ssid":"STARLINK2_4","ssid_password":"Spunky11","ap_password":"password","ap_ssid":"ESP32NCD","buzzer":0,"interface":1,"device_id":1}
